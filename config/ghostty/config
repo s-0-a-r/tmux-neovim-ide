@@ -1,0 +1,15 @@
+background-opacity = 0.8
+font-family="PlemolJP Console NF"
+keybind = shift+enter=text:\n
+term = xterm-256color
+macos-option-as-alt = true
+
+# Cmd keys forwarded to Neovim (via tmux user-keys)
+keybind = super+p=text:\x1b[112;9~
+keybind = super+shift+f=text:\x1b[70;10~
+keybind = super+shift+p=text:\x1b[80;10~
+keybind = super+b=text:\x1b[98;9~
+keybind = super+slash=text:\x1b[47;9~
+keybind = super+grave_accent=text:\x1b[96;9~
+keybind = super+j=text:\x1b[106;9~
+keybind = super+shift+j=text:\x1b[74;10~

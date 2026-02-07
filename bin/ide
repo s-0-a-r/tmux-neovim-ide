@@ -1,0 +1,45 @@
+#!/bin/bash
+
+selected=$(find "$HOME/projects" -maxdepth 3 -name ".git" 2>/dev/null | xargs -n1 dirname | sort -u | fzf --prompt="Project > ")
+
+if [[ -z "$selected" ]]; then
+    echo "No project selected"
+    exit 0
+fi
+
+# Get repository name and directory name
+repo_name=$(cd "$selected" && basename "$(git rev-parse --show-toplevel 2>/dev/null || echo "$selected")")
+dir_name=$(basename "$selected")
+
+# Create session name: repo_suffix or just repo
+if [[ "$dir_name" == "$repo_name" ]]; then
+    session_name="$repo_name"
+elif [[ "$dir_name" == "$repo_name"-* ]]; then
+    suffix="${dir_name#$repo_name-}"
+    session_name="${repo_name}_${suffix}"
+else
+    session_name="$dir_name"
+fi
+
+# Replace invalid characters (. and :)
+session_name="${session_name//./_}"
+session_name="${session_name//:/_}"
+
+
+if tmux has-session -t="$session_name" 2>/dev/null; then
+    # 既存セッションにアタッチ
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "$session_name"
+    else
+        tmux attach-session -t "$session_name"
+    fi
+else
+    # 新規セッション: NVIM_IDE=1 でnvimを起動
+    tmux new-session -d -s "$session_name" -c "$selected" -x "$(tput cols)" -y "$(tput lines)"
+    tmux send-keys -t "$session_name" "NVIM_IDE=1 nvim" Enter
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "$session_name"
+    else
+        tmux attach-session -t "$session_name"
+    fi
+fi
