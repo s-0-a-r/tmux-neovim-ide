@@ -7,8 +7,6 @@ return {
       { "<D-p>", "<cmd>FzfLua files<cr>", desc = "Find files" },
       { "<D-S-f>", "<cmd>FzfLua live_grep<cr>", desc = "Search in files" },
       { "<D-S-p>", "<cmd>FzfLua commands<cr>", desc = "Command palette" },
-      { "<D-S-o>", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Go to symbol" },
-      { "<D-t>", "<cmd>FzfLua lsp_workspace_symbols<cr>", desc = "Workspace symbols" },
       { "<D-S-m>", "<cmd>FzfLua diagnostics_document<cr>", desc = "Problems" },
       -- Leader alternatives
       { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
@@ -17,8 +15,6 @@ return {
       { "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help tags" },
       { "<leader>fr", "<cmd>FzfLua oldfiles<cr>", desc = "Recent files" },
       { "<leader>fd", "<cmd>FzfLua diagnostics_document<cr>", desc = "Diagnostics" },
-      { "<leader>fs", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document symbols" },
-      { "<leader>fw", "<cmd>FzfLua lsp_workspace_symbols<cr>", desc = "Workspace symbols" },
     },
     opts = {
       winopts = {

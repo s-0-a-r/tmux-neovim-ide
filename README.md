@@ -1,22 +1,22 @@
 # tmux-neovim-ide
 
-Ghostty + tmux + Neovim で VSCode ライクなターミナル IDE を構築するための設定ファイル一式。
+A VSCode-like terminal IDE built with Ghostty + tmux + Neovim.
 
-Cmd+P でファイル検索、Cmd+Shift+F でプロジェクト内検索、Cmd+B でサイドバー切り替え。
-VSCode のキーバインドがそのまま使える。
+Cmd+P to find files, Cmd+Shift+F to search across the project, Cmd+B to toggle the sidebar.
+VSCode keybindings work out of the box.
 
-## スクリーンショット
+## Screenshot
 
 ![IDE Overview](docs/screenshots/ide-overview.png)
 
-## 必要なもの
+## Requirements
 
 - macOS
 - [Homebrew](https://brew.sh)
-- [Ghostty](https://ghostty.org)（Cmd キーパススルーに必要）
-- [PlemolJP Console NF](https://github.com/yuru7/PlemolJP)（フォント。他の Nerd Font でも可）
+- [Ghostty](https://ghostty.org) (required for Cmd key passthrough)
+- [PlemolJP Console NF](https://github.com/yuru7/PlemolJP) (font; any other Nerd Font works too)
 
-## セットアップ
+## Setup
 
 ```bash
 git clone https://github.com/s-0-a-r/tmux-neovim-ide.git ~/tmux-neovim-ide
@@ -24,87 +24,83 @@ cd ~/tmux-neovim-ide
 ./setup.sh
 ```
 
-既にツールがインストール済みの場合：
+If the tools are already installed:
 
 ```bash
 ./setup.sh --config-only
 ```
 
-セットアップスクリプトは以下を行います：
+The setup script will:
 
-1. `brew install` でツールをインストール（neovim, tmux, fzf, fd, ripgrep, ghostty）
-2. 既存の設定ファイルをバックアップ
-3. シンボリックリンクで設定を配置
-4. PATH に `~/.local/bin` を追加
+1. Install tools via `brew install` (neovim, tmux, fzf, fd, ripgrep, ghostty)
+2. Back up existing config files
+3. Deploy configs as symlinks
+4. Add `~/.local/bin` to PATH
 
-セットアップ後、Neovim を起動するとプラグインが自動インストールされます。リポジトリと同じバージョンに揃えたい場合は：
+After setup, Neovim will auto-install plugins on first launch. To pin to the exact versions in this repo:
 
 ```bash
 nvim --headless "+Lazy! restore" +qa
 ```
 
-## 使い方
+## Usage
 
 ```bash
-ide            # ~/projects から fzf で選択
-ide .          # カレントディレクトリを開く
-ide ~/my-app   # 任意のディレクトリを指定して開く
+ide            # select from ~/projects via fzf
+ide .          # open the current directory
+ide ~/my-app   # open a specific directory
 ```
 
-引数なしで実行すると fzf で `~/projects` 配下のプロジェクトを選択できます。引数にディレクトリを渡すと、そのディレクトリで直接 IDE モードが起動します。
+Running without arguments lets you pick a project from `~/projects` via fzf. Passing a directory opens it directly in IDE mode.
 
-## キーバインド
+## Keybindings
 
-### VSCode ライクなキーバインド（Cmd キー）
+### VSCode-like keybindings (Cmd key)
 
-| キー | 機能 |
+| Key | Action |
 |------|------|
-| `Cmd+P` | ファイル検索 |
-| `Cmd+Shift+F` | プロジェクト内テキスト検索 |
-| `Cmd+Shift+P` | コマンドパレット |
-| `Cmd+B` | サイドバー（Neo-tree）切り替え |
-| `Cmd+/` | コメントトグル |
-| `` Cmd+` `` | 下部ターミナル切り替え |
-| `Cmd+J` | 右側ターミナル切り替え |
-| `Cmd+Shift+J` | フローティングターミナル |
+| `Cmd+P` | Find file |
+| `Cmd+Shift+F` | Search in project |
+| `Cmd+Shift+P` | Command palette |
+| `Cmd+B` | Toggle sidebar (Neo-tree) |
+| `Cmd+/` | Toggle comment |
+| `` Cmd+` `` | Toggle bottom terminal |
+| `Cmd+J` | Toggle right terminal |
+| `Cmd+Shift+J` | Floating terminal |
 
-### Neovim キーバインド
+### Neovim keybindings
 
-| キー | 機能 |
+| Key | Action |
 |------|------|
-| `Space` | Leader キー |
-| `Ctrl+h/j/k/l` | ウィンドウ/tmuxペイン移動 |
-| `Shift+H/L` | 前/次のタブ |
-| `Alt+J/K` | 行の上下移動 |
-| `gd` | 定義へジャンプ |
-| `gr` | 参照一覧 |
-| `K` | ホバードキュメント |
-| `F2` | リネーム |
-| `Space+ff` | ファイル検索 |
-| `Space+fg` | テキスト検索 |
+| `Space` | Leader key |
+| `Ctrl+h/j/k/l` | Move between windows / tmux panes |
+| `Shift+H/L` | Previous / next tab |
+| `Alt+J/K` | Move line up / down |
+| `Space+ff` | Find file |
+| `Space+fg` | Live grep |
 
 ### tmux
 
-| キー | 機能 |
+| Key | Action |
 |------|------|
 | `Ctrl+B` | Prefix |
-| `Prefix + c` | 新しいウィンドウ |
-| `Prefix + \|` | 縦分割 |
-| `Prefix + -` | 横分割 |
+| `Prefix + c` | New window |
+| `Prefix + \|` | Vertical split |
+| `Prefix + -` | Horizontal split |
 
-## アーキテクチャ
+## Architecture
 
 ```
-Ghostty (Cmd キーをエスケープシーケンスに変換)
-  └─ tmux (user-keys で受け取り CSI u 形式に変換)
-       └─ Neovim (<D-*> マッピングで各機能に割り当て)
+Ghostty (converts Cmd keys to escape sequences)
+  └─ tmux (receives via user-keys, converts to CSI u format)
+       └─ Neovim (<D-*> mappings bound to editor features)
 ```
 
-## ディレクトリ構造
+## Directory structure
 
 ```
 tmux-neovim-ide/
-├── setup.sh                          # セットアップスクリプト
+├── setup.sh                          # setup script
 ├── config/
 │   ├── tmux.conf                     # → ~/.tmux.conf
 │   ├── ghostty/
@@ -118,7 +114,6 @@ tmux-neovim-ide/
 │           ├── fzf.lua
 │           ├── git.lua
 │           ├── indent.lua
-│           ├── lsp.lua
 │           ├── lualine.lua
 │           ├── navigation.lua
 │           ├── neo-tree.lua
@@ -129,11 +124,11 @@ tmux-neovim-ide/
     └── ide                           # → ~/.local/bin/ide
 ```
 
-## 関連記事
+## Related articles (Japanese)
 
-- [【コピペで動く】tmux + Neovimで作るVSCodeライクなターミナル開発環境](https://zenn.dev/s0ar/articles/fd6203970ba0fe)
-- [【コピペで動く】Zellij + Helixで作る軽量ターミナル開発環境](https://zenn.dev/s0ar/articles/192a58e9177961)
+- [Build a VSCode-like terminal IDE with tmux + Neovim](https://zenn.dev/s0ar/articles/fd6203970ba0fe)
+- [Build a lightweight terminal IDE with Zellij + Helix](https://zenn.dev/s0ar/articles/192a58e9177961)
 
-## ライセンス
+## License
 
 MIT

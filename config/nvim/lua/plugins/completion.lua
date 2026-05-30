@@ -10,7 +10,7 @@ return {
         nerd_font_variant = "mono",
       },
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "path", "snippets", "buffer" },
       },
       completion = {
         accept = { auto_brackets = { enabled = true } },

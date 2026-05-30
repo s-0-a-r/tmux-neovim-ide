@@ -94,17 +94,17 @@ if vim.g.is_ide then
     once = true,
     callback = function()
       vim.defer_fn(function()
-        -- レイアウト構築
+        -- Build IDE layout
         vim.cmd("Neotree show filesystem")
         vim.cmd("wincmd l")
         local editor_win = vim.api.nvim_get_current_win()
         Snacks.terminal.toggle(nil, {
           env = { SNACKS_TERM = "bottom" },
-          win = { position = "bottom", height = 0.3 },
+          win = { position = "bottom", height = 0.4 },
         })
         Snacks.terminal.toggle(nil, {
           env = { SNACKS_TERM = "right" },
-          win = { position = "right", width = 0.3 },
+          win = { position = "right", width = 0.35 },
         })
         vim.api.nvim_set_current_win(editor_win)
         vim.cmd("stopinsert")

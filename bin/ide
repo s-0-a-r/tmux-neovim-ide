@@ -1,14 +1,14 @@
 #!/bin/bash
 
 if [[ -n "$1" ]]; then
-    # 引数が指定された場合: そのディレクトリを使う
+    # Use the specified directory
     selected=$(cd "$1" 2>/dev/null && pwd)
     if [[ -z "$selected" || ! -d "$selected" ]]; then
         echo "Directory not found: $1"
         exit 1
     fi
 else
-    # 引数なし: ~/projects から fzf で選択
+    # No argument: select from ~/projects via fzf
     selected=$(find "$HOME/projects" -maxdepth 3 -name ".git" 2>/dev/null | xargs -n1 dirname | sort -u | fzf --prompt="Project > ")
     if [[ -z "$selected" ]]; then
         echo "No project selected"
@@ -36,14 +36,14 @@ session_name="${session_name//:/_}"
 
 
 if tmux has-session -t="$session_name" 2>/dev/null; then
-    # 既存セッションにアタッチ
+    # Attach to existing session
     if [[ -n "$TMUX" ]]; then
         tmux switch-client -t "$session_name"
     else
         tmux attach-session -t "$session_name"
     fi
 else
-    # 新規セッション: NVIM_IDE=1 でnvimを起動
+    # New session: launch nvim with NVIM_IDE=1
     tmux new-session -d -s "$session_name" -c "$selected" -x "$(tput cols)" -y "$(tput lines)"
     tmux send-keys -t "$session_name" "NVIM_IDE=1 nvim" Enter
     if [[ -n "$TMUX" ]]; then

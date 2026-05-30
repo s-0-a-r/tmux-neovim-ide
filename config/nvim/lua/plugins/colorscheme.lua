@@ -10,14 +10,6 @@ return {
         diffview = true,
         gitsigns = true,
         indent_blankline = { enabled = true, scope_color = "lavender" },
-        mason = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            warnings = { "undercurl" },
-          },
-        },
         neo_tree = true,
         rainbow_delimiters = true,
         treesitter = true,

@@ -15,13 +15,7 @@ return {
       return {
         options = {
           mode = "buffers",
-          diagnostics = "nvim_lsp",
-          diagnostics_indicator = function(_, _, diag)
-            local icons = { error = " ", warning = " ", hint = " " }
-            local ret = (diag.error and icons.error .. diag.error .. " " or "")
-              .. (diag.warning and icons.warning .. diag.warning .. " " or "")
-            return vim.trim(ret)
-          end,
+          diagnostics = false,
           offsets = {
             {
               filetype = "neo-tree",

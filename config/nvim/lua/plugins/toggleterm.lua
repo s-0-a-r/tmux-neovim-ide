@@ -25,31 +25,31 @@ return {
       },
     },
     keys = {
-      -- Cmd+` = 下部ターミナル (Claude Code 実装用)
+      -- Cmd+` = bottom terminal (for Claude Code implementation)
       {
         "<D-`>",
         function()
           Snacks.terminal.toggle(nil, {
             env = { SNACKS_TERM = "bottom" },
-            win = { position = "bottom", height = 0.3 },
+            win = { position = "bottom", height = 0.4 },
           })
         end,
         mode = { "n", "t" },
         desc = "Bottom terminal",
       },
-      -- Cmd+J = 右側ターミナル (Claude Code 相談/レビュー用)
+      -- Cmd+J = right terminal (for Claude Code consultation/review)
       {
         "<D-j>",
         function()
           Snacks.terminal.toggle(nil, {
             env = { SNACKS_TERM = "right" },
-            win = { position = "right", width = 0.3 },
+            win = { position = "right", width = 0.35 },
           })
         end,
         mode = { "n", "t" },
         desc = "Right terminal",
       },
-      -- Cmd+Shift+J = フローティングターミナル (通常ターミナル/git操作用)
+      -- Cmd+Shift+J = floating terminal (general terminal / git operations)
       {
         "<D-S-j>",
         function()
